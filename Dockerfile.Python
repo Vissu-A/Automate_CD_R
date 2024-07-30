@@ -10,7 +10,7 @@ ENV LANG C.UTF-8
 
 # runtime dependencies
 RUN set -eux; \
-	apk add --no-cache \
+	apt-get add --no-cache \
 		ca-certificates \
 		tzdata \
 	;
@@ -20,7 +20,7 @@ ENV PYTHON_VERSION 3.11.7
 
 RUN set -eux; \
 	\
-	apk add --no-cache --virtual .build-deps \
+	apt-get add --no-cache --virtual .build-deps \
 		gnupg \
 		tar \
 		xz \
@@ -109,9 +109,9 @@ RUN set -eux; \
 		| tr ',' '\n' \
 		| sort -u \
 		| awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
-		| xargs -rt apk add --no-network --virtual .python-rundeps \
+		| xargs -rt apt-get add --no-network --virtual .python-rundeps \
 	; \
-	apk del --no-network .build-deps; \
+	apt-get del --no-network .build-deps; \
 	\
 	python3 --version
 
